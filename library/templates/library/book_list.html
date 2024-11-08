@@ -3,7 +3,10 @@
 {% block title %}Book List{% endblock %}
 
 {% block content %}
-    <a href="{% url 'book_create' %}" class="btn btn-primary mb-3">Add New Book</a>
+    <div x-data="{ bookCount: {{ books|length }} }" class="mb-4">
+        <h3>Total Books: <span x-text="bookCount"></span></h3>    
+        <a href="{% url 'book_create' %}" class="btn btn-primary mb-3">Add New Book</a>
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -25,6 +28,7 @@
                             hx-target="#book-row-{{ book.pk }}"
                             hx-swap="outerHTML"
                             hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                            x-on:click="bookCount--"
                             class="btn btn-danger btn-sm">
                             Delete
                         </button>

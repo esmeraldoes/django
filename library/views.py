@@ -2,6 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Book
 from .forms import BookForm
+from django.http import HttpResponse
 
 class BookListView(ListView):
     model = Book
@@ -27,5 +28,12 @@ class BookUpdateView(UpdateView):
 
 class BookDeleteView(DeleteView):
     model = Book
-    template_name = 'library/book_confirm_delete.html' 
+    template_name = 'library/book_confirm_delete.html'
     success_url = reverse_lazy('book_list')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        if request.htmx:
+            return HttpResponse('')
+        return super().delete(request, *args, **kwargs)

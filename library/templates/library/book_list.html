@@ -3,7 +3,10 @@
 {% block title %}Book List{% endblock %}
 
 {% block content %}
-    <a href="{% url 'book_create' %}" class="btn btn-primary mb-3">Add New Book</a>
+    <div x-data="{ bookCount: {{ books|length }} }" class="mb-4">
+        <h3>Total Books: <span x-text="bookCount"></span></h3>    
+        <a href="{% url 'book_create' %}" class="btn btn-primary mb-3">Add New Book</a>
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -12,7 +15,7 @@
         </thead>
         <tbody>
             {% for book in books %}
-                <tr>
+                <tr id="book-row-{{ book.pk }}">
                     <td>{{ book.title }}</td>
                     <td>{{ book.author }}</td>
                     <td>{{ book.genre }}</td>
@@ -20,7 +23,15 @@
                     <td>
                         <a href="{% url 'book_detail' book.pk %}" class="btn btn-info btn-sm">View</a>
                         <a href="{% url 'book_update' book.pk %}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{% url 'book_delete' book.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                         <button 
+                            hx-delete="{% url 'book_delete' book.pk %}"
+                            hx-target="#book-row-{{ book.pk }}"
+                            hx-swap="outerHTML"
+                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                            x-on:click="bookCount--"
+                            class="btn btn-danger btn-sm">
+                            Delete
+                        </button>
                     </td>
                 </tr>
             {% endfor %}

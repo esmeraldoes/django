@@ -8,6 +8,6 @@ class BookForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'author': forms.TextInput(attrs={'class': 'form-control'}),
-            'genre': forms.TextInput(attrs={'class': 'form-control'}),
+            'genre': forms.Select(attrs={'class': 'form-control'}),
             'publication_year': forms.NumberInput(attrs={'class': 'form-control'}),
         }

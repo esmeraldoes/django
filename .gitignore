@@ -1,2 +1,6 @@
 env
 \env
+.env
+config/__pycache__/
+library/__pycache__/
+*.pyc
